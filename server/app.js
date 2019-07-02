@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const csv = require("csvtojson/v2");
 const app = express();
 
 const PORT = 3000;
@@ -27,33 +28,17 @@ app.get('/', (req, res) => {
     console.log('node-superagent');
 });
 
-app.get('/logs', (req, res) => {
-// write your code to return a json object containing the log data here
-    fs.readFile('log.csv', 'utf8', (err, csv) => {
-        if (err) throw err;
-        res.json(toJson(csv));
-    });
 
-    function toJson(csv) {
-        var lines = csv.split("\n");
-        let content = [];
-        for (let i = 1; i < lines.length - 1; i++) {
-          content.push(lines[i].split(","));
-        }
-        let finalArr = [];
-        for (let i = 0; i < content.length; i++) {
-          let obj = {};
-          obj["Agent"] = content[i][0];
-          obj["Time"] = content[i][1];
-          obj["Method"] = content[i][2];
-          obj["Resource"] = content[i][3];
-          obj["Version"] = content[i][4];
-          obj["Status"] = content[i][5];
-          finalArr.push(obj);
-          console.log(finalArr);
-        }
-        return finalArr;
-      };
+// fix the function to convert csv to json object
+
+app.get("/logs", (req, res) => {
+    // write your code to return a json object containing the log data here
+    csv()
+    .fromFile('./log.csv')
+    .then((obj)=>{
+    console.log(obj);
+    res.json(obj);
+ })
     });
 
 module.exports = app;
