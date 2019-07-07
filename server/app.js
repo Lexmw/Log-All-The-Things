@@ -12,7 +12,7 @@ app.use((req, res, next) => {
     let time = new Date().toISOString(); 
     let method = req.method;    
     let resource = req.path;
-    let version = 'HTTP:/' + req.httpVersion;
+    let version = 'HTTP/' + req.httpVersion;
     let status = res.statusCode;
     let logger = agent + ',' + time + ',' + method + ',' + resource + ',' + version + ',' + status + "\n";
 
